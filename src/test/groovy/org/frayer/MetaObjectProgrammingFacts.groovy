@@ -1,25 +1,21 @@
 package org.frayer
 
-import spock.lang.Specification
+import spock.lang.*
 
 class MetaObjectProgrammingFacts extends Specification {
+    @Ignore
     def "instances of Groovy classes are GroovyObjects"() {
-        expect:
-        (new Car()) instanceof GroovyObject
     }
 
+    @Ignore
     def "instances of Java classes are not GroovyObjects"() {
-        expect:
-        !((new Person('Buddy', 'Lee')) instanceof GroovyObject)
     }
 
+    @Ignore
     def "instances of Groovy classes have a metaClass property"() {
-        expect:
-        (new Car()).metaClass != null
     }
 
+    @Ignore
     def "instances of Java classes have a metaClass property"() {
-        expect:
-        (new Person("Buddy", "Lee")).metaClass != null
     }
 }
