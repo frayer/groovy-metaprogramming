@@ -46,7 +46,7 @@ class CategorySpec extends Specification {
         use(GarageCategory) {
             garage.findCarByMake('BMW')
         }
-        garage.findCarByMake() // This throws a MissingMethodException outside of the "use" block.
+        garage.findCarByMake('BMW') // This throws a MissingMethodException outside of the "use" block.
 
         then:
         thrown(groovy.lang.MissingMethodException)
