@@ -2,40 +2,23 @@ package org.frayer
 
 import spock.lang.*
 
-class Fibonacci implements GroovyInterceptable {
-    def caching = false
-    def cachedResults = [:]
+class Fibonacci {
     def callCount = 0
 
-    def invokeMethod(String name, args) {
-        if (caching && name == 'calc') {
-            def fibNum = args[0]
-            if (cachedResults[fibNum]) {
-                return cachedResults[fibNum]
-            } else {
-                cachedResults[fibNum] = Fibonacci.metaClass.getMetaMethod(name, args).invoke(this, args)
-                return cachedResults[fibNum]
-            }
-        }
-        else {
-            Fibonacci.metaClass.getMetaMethod(name, args).invoke(this, args)
-        }
-    }
-
-    def calc(num) {
+    def fib(num) {
         callCount++
         if (num < 2) num
-        else calc(num - 1) + calc(num - 2)
+        else fib(num - 1) + fib(num - 2)
     }
 }
 
 class MemoizeSpec extends Specification {
     def "Fibonacci works as expected"() {
         given:
-        def fib = new Fibonacci()
+        def fibonacci = new Fibonacci()
 
         expect:
-        result == fib.calc(num)
+        result == fibonacci.fib(num)
 
         where:
         result | num
@@ -49,7 +32,7 @@ class MemoizeSpec extends Specification {
 
     def "Fibonacci calculations are not cached"() {
         given:
-        def fib = new Fibonacci()
+        def fibonacci = new Fibonacci()
 
         when:
         /*
@@ -61,20 +44,21 @@ class MemoizeSpec extends Specification {
                        \__ fib(2) -- fib(1) -- 1
                                   \_ fib(0) -- 0
         */
-        fib.calc(4)
+        fibonacci.fib(4)
 
         then:
-        fib.callCount == 9
+        fibonacci.callCount == 9
     }
 
+    @Ignore
     def "Fibonacci calculations are cached"() {
         given:
-        def fib = new Fibonacci(caching: true)
+        def fibonacci = new Fibonacci()
 
         when:
-        fib.calc(4)
+        fibonacci.fib(4)
 
         then:
-        fib.callCount == 5
+        fibonacci.callCount == 5
     }
 }
