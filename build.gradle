@@ -7,8 +7,14 @@ repositories {
 }
 
 dependencies {
-    compile 'org.codehaus.groovy:groovy-all:2.1.1'
+    compile 'org.codehaus.groovy:groovy-all:2.3.4'
     testCompile(
         'org.spockframework:spock-core:0.7-groovy-2.0',
         'junit:junit:4.11')
+}
+
+test {
+    testLogging {
+        exceptionFormat = 'full'
+    }
 }
